@@ -1,3 +1,8 @@
-from django.shortcuts import render
+from django.views.generic import ListView
 
-# Create your views here.
+from hotelrooms.booking.models import Room
+
+
+class Rooms(ListView):
+    model = Room
+    template_name = 'room_list.html'
