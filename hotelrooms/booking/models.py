@@ -1,7 +1,6 @@
 from django.contrib.postgres.constraints import ExclusionConstraint
-from django.contrib.postgres.fields.ranges import DateRangeField
+from django.contrib.postgres.fields.ranges import DateRangeField, RangeOperators
 from django.db import models
-from django.db.models import F
 
 
 class Room(models.Model):
@@ -18,5 +17,9 @@ class Booking(models.Model):
 
     class Meta:
         constraints = [
-            ExclusionConstraint(expressions=[F("time")], index_type="GIST")
+            ExclusionConstraint(
+                name='hotel_room_excl_constraint',
+                expressions=[("time", RangeOperators.OVERLAPS)],
+                index_type="GIST",
+            )
         ]

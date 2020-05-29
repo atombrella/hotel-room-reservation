@@ -1,6 +1,11 @@
-from django.views.generic import ListView
+from django.views.generic import FormView, ListView
 
-from hotelrooms.booking.models import Room
+from .forms import RoomForm
+from .models import Room
+
+
+class BookRoom(FormView):
+    form_class = RoomForm
 
 
 class Rooms(ListView):
