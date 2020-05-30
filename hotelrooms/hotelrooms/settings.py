@@ -27,7 +27,6 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
-
 # Application definition
 
 INSTALLED_APPS = [
@@ -72,6 +71,10 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'hotelrooms.wsgi.application'
 
+PROJECT_DIR = os.path.dirname(__file__)
+
+STATIC_ROOT = os.path.join(PROJECT_DIR, 'static/')
+STATIC_URL = '/static'
 
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases

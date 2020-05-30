@@ -6,7 +6,8 @@ PG_USER='django'
 PG_PASSWORD='hotelrooms'
 PG_DB_NAME='hotelrooms'
 
-docker run -p $PG_PORT:5432 --name pg_hotels_room \
+docker run --restart always \
+  -p $PG_PORT:5432 --name pg_hotels_room \
   -e POSTGRES_PASSWORD=$PG_PASSWORD \
   -e POSTGRES_USER=$PG_USER \
   -e POSTGRES_DB=$PG_DB_NAME \
