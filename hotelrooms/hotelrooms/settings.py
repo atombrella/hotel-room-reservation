@@ -56,7 +56,10 @@ ROOT_URLCONF = 'hotelrooms.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [
+            os.path.join(BASE_DIR, "hotelrooms", "templates"),
+            os.path.join(BASE_DIR, "booking", "templates"),
+        ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -72,9 +75,6 @@ TEMPLATES = [
 WSGI_APPLICATION = 'hotelrooms.wsgi.application'
 
 PROJECT_DIR = os.path.dirname(__file__)
-
-STATIC_ROOT = os.path.join(PROJECT_DIR, 'static/')
-STATIC_URL = '/static'
 
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
@@ -126,5 +126,12 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
-
+STATIC_ROOT = os.path.join(PROJECT_DIR, 'static/')
 STATIC_URL = '/static/'
+
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, "static"),
+]
+
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_URL = '/media/'
