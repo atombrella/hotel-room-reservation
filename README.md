@@ -1,6 +1,13 @@
 # Hotel room reservation app
 
-Sample Django app to demo exclusion constraints and how Django works in general.
+Sample Django app to demo [exclusion constraints](https://www.postgresql.org/docs/current/ddl-constraints.html#DDL-CONSTRAINTS-EXCLUSION) 
+and how Django works in general. It's meant 
+for a session at [Eficode Praqma](https://www.eficode.com) CodeCamp in June 2020. However, it's also
+intended as a sample of how Django works in general, which covers the 
+[admin site](https://docs.djangoproject.com/en/3.0/ref/contrib/admin/), 
+[templates](https://docs.djangoproject.com/en/3.0/topics/templates/), 
+[models](https://docs.djangoproject.com/en/3.0/topics/db/models/),
+as well as [django.contrib.postgres](https://docs.djangoproject.com/en/3.0/ref/contrib/postgres/).
 
 ## How to install
 
@@ -15,4 +22,6 @@ the virtual environment to run this command to be able to run the Django command
 
     source venv/bin/activate
 
-I left some bits and pieces that we'll go through.
+I left some bits and pieces that we'll go through, which are mostly left as comments 
+in the code, e.g., nobody would probably book a hotel room without a description or
+images.

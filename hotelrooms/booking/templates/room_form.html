@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+    <form action="{% url 'booking:create_room' %}" method="post">
+        {% crsf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-success">
+            Create Room
+        </button>
+    </form>
+
+{% endblock %}
