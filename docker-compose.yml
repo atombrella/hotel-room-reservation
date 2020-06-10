@@ -1,25 +1,25 @@
-version: 3.5
+version: "3.5"
 
 services:
   pgsql:
     image: postgres:12
     environment:
-      - PG_HOST: 'localhost'
-      - PG_PORT: 5433
-      - PG_USER: 'django'
-      - PG_PASSWORD: 'hotelrooms'
-      - PG_DB_NAME: 'hotelrooms'
+      POSTGRES_HOST: 'localhost'
+      POSTGRES_PORT: 5433
+      POSTGRES_USER: 'django'
+      POSTGRES_PASSWORD: 'hotelrooms'
+      POSTGRES_DB: 'hotelrooms'
     volumes:
       - data-postgresql:/var/lib/postgresql
-    expose:
-      - 5433:5432
+    ports:
+      - "5434:5432"
   django:
-    build:
-      dockerfile: Dockerfile.app
-      context: .
-    images:
+    build: .
+    ports:
+      - "8000:8000"
+    volumes:
       - media:/usr/web/app # for images etc.
 
 volumes:
   data-postgresql:
-    external: true
+  media:

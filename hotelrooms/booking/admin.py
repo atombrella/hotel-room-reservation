@@ -1,5 +1,7 @@
 from django.contrib import admin
-from django.core.exceptions import ValidationError
+from django.core.exceptions import NON_FIELD_ERRORS
+from django.db import IntegrityError, transaction
+from django.forms import ModelForm
 
 from .forms import BookingForm
 from .models import Booking, Room
@@ -15,12 +17,14 @@ class BookingAdmin(admin.ModelAdmin):
         form.base_fields['time'].initial = [obj.time.lower, obj.time.upper]
         return form
 
-    def save_model(self, request, obj, form, change):
+    def save_form(self, request, form, change):
+        return super().save_form(request, form, change)
+
+    def save_model(self, request, obj: Booking, form: ModelForm, change: bool):
         try:
             super().save_model(request, obj, form, change)
-        except ValueError as e:
-            print(e)
-            form.errors['__all__'] = "The room is already booked on some of those days"
+        except IntegrityError:
+            form.add_error(NON_FIELD_ERRORS, "The room is already booked on some of those days")
 
     class Media:
         css = {

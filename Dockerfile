@@ -5,10 +5,15 @@ RUN apt-get update \
         postgresql-client \
     && rm -rf /var/lib/apt/lists/*
 
+ENV DB_HOST "pgsql"
+
 WORKDIR /usr/src/app
 COPY requirements.txt ./
 RUN pip install -r requirements.txt
 COPY . .
 
+WORKDIR /usr/src/app/hotelrooms
+
 EXPOSE 8000
-ENTRYPOINT ["python", "manage.py"]
+
+ENTRYPOINT ["python", "manage.py", "runserver"]
