@@ -1,30 +1,26 @@
+from django.db import IntegrityError
+from django.http import HttpResponseRedirect
+from django.urls import reverse
 from django.views.generic import (
     CreateView, DetailView, FormView, ListView, UpdateView,
 )
 
 from .forms import BookingForm, RoomForm
-from .models import Room
+from .models import Booking, Room
 
 
 class BookRoom(FormView):
     form_class = BookingForm
+    template_name = "book_room.html"
 
-    def get_template_names(self):
-        return "book_room.html"
+    def form_valid(self, form):
+        booking = super().form_valid(form)
+        return HttpResponseRedirect(booking.get_absolute_url())
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['rooms'] = context['rooms'] = Room.objects.all()
-        return context
 
-    def get_form_kwargs(self, **kwargs):
-        try:
-            return {
-                'room': Room.objects.get(pk=self.kwargs['pk']),
-                **kwargs,
-            }
-        except Exception:  # make more specific
-            return None
+class BookingView(DetailView):
+    model = Booking
+    template_name = "book_confirmation.html"
 
 
 class Rooms(ListView):

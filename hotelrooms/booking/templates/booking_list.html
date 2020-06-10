@@ -1,5 +1,9 @@
 {% extends "base.html" %}
 
 {% block content %}
-
+    <ul>
+    {% for booking in bookings %}
+        <li>Hotel {{ booking.room }} booked from {{ booking.time.0 }} to {{ booking.time.1 }}</li>
+    {% endfor %}
+    </ul>
 {% endblock %}

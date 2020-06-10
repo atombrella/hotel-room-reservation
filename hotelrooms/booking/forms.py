@@ -1,9 +1,8 @@
 from django.contrib.postgres.forms import RangeWidget
+from django.core.exceptions import ValidationError
 from django.forms import DateInput, ModelForm, Select
 
 from .models import Booking, Room
-
-from .widgets import BootstrapDateTimePickerInput
 
 
 class RoomForm(ModelForm):
@@ -14,21 +13,27 @@ class RoomForm(ModelForm):
 
 class BookingForm(ModelForm):
 
-    def __init__(self, room, *args, **kwargs):
+    def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.fields['room'].initial = room
         self.fields['room'].empty_label = None
+
+    def save(self, commit=True):
+        try:
+            return super().save(commit)
+        except ValueError as e:
+            raise ValidationError(e)
 
     class Meta:
         model = Booking
         fields = ['room', 'time']
         widgets = {
             'room': Select(attrs={
-                'class': 'form-control'
+                'class': 'form-control',
             }),
-            'time': RangeWidget(base_widget=BootstrapDateTimePickerInput(
+            'time': RangeWidget(base_widget=DateInput(
                 attrs={
-                    'class': 'form_datetime',
+                    'type': 'date',
+                    'class': 'form-control',
                 },
             )),
         }
