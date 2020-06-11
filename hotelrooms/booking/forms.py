@@ -1,6 +1,6 @@
 from django.contrib.postgres.forms import RangeWidget
-from django.core.exceptions import ValidationError
-from django.db import IntegrityError
+from django.core.exceptions import NON_FIELD_ERRORS, ValidationError
+from django.db import IntegrityError, connection, transaction
 from django.forms import DateInput, ModelForm, Select
 
 from .models import Booking, Room
@@ -18,14 +18,15 @@ class BookingForm(ModelForm):
         super().__init__(*args, **kwargs)
         self.fields['room'].empty_label = None
 
-    def _post_clean(self):
-        super()._post_clean()
-
-    def save(self, commit=True):
-        try:
-            return super().save(commit)
-        except IntegrityError as e:
-            raise ValidationError(e)
+    def clean(self):
+        if hasattr(self.instance, "pk"):
+            with transaction.atomic() as t:
+                self.instance.time = self.cleaned_data['time']
+                try:
+                    self.instance.save()
+                except IntegrityError:
+                    raise ValidationError("Can't book hotel room on the same day")
+        return self.cleaned_data
 
     class Meta:
         model = Booking

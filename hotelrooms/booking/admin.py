@@ -22,8 +22,9 @@ class BookingAdmin(admin.ModelAdmin):
 
     def save_model(self, request, obj: Booking, form: ModelForm, change: bool):
         try:
-            super().save_model(request, obj, form, change)
-        except IntegrityError:
+            with transaction.mark_for_rollback_on_error() as trans:
+                super().save_model(request, obj, form, change)
+        except:
             form.add_error(NON_FIELD_ERRORS, "The room is already booked on some of those days")
 
     class Media:

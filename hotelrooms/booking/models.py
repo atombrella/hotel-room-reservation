@@ -2,7 +2,8 @@ from django.contrib.postgres.constraints import ExclusionConstraint
 from django.contrib.postgres.fields.ranges import (
     DateRangeField, RangeOperators,
 )
-from django.db import models
+from django.core.exceptions import ValidationError
+from django.db import IntegrityError, models, transaction
 
 from django.urls import reverse
 
@@ -30,12 +31,23 @@ class Booking(models.Model):
     room = models.ForeignKey(Room, on_delete=models.CASCADE)
     time = DateRangeField(null=False)
     # Perhaps a booking is not always valid?
+    # Perhaps the booking should be associated with a peson?
 
     def __str__(self):
         return f"{self.room} booked from {self.time.lower} to {self.time.upper}"
 
     def get_absolute_url(self):
         return reverse("booking:booking", kwargs={'pk': self.pk})
+
+    def save_base(self, raw=False, force_insert=False, force_update=False, using=None, update_fields=None):
+        super().save_base(raw, force_insert, force_update, using, update_fields)
+
+    def save(self, force_insert=False, force_update=False, using=None, update_fields=None):
+        try:
+            with transaction.atomic() as trans:
+                super().save(force_insert, force_update, using, update_fields)
+        except IntegrityError as e:
+            raise ValidationError("There's already a booking on those days") from e
 
     class Meta:
         constraints = [
