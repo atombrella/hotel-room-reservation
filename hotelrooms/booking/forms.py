@@ -1,6 +1,6 @@
 from django.contrib.postgres.forms import RangeWidget
-from django.core.exceptions import NON_FIELD_ERRORS, ValidationError
-from django.db import IntegrityError, connection, transaction
+from django.core.exceptions import ValidationError
+from django.db import IntegrityError, transaction
 from django.forms import DateInput, ModelForm, Select
 
 from .models import Booking, Room
@@ -21,6 +21,7 @@ class BookingForm(ModelForm):
     def clean(self):
         if hasattr(self.instance, "pk"):
             with transaction.atomic() as t:
+                # probably should be select for update
                 self.instance.time = self.cleaned_data['time']
                 try:
                     self.instance.save()

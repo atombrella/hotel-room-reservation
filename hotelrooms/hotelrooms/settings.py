@@ -83,7 +83,7 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'hotelrooms',
-        'PORT': 5433,
+        'PORT': 5432,
         'HOST': os.getenv("DB_HOST", "localhost"),
         'USER': 'django',
         'PASSWORD': 'hotelrooms',

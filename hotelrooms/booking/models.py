@@ -39,13 +39,9 @@ class Booking(models.Model):
     def get_absolute_url(self):
         return reverse("booking:booking", kwargs={'pk': self.pk})
 
-    def save_base(self, raw=False, force_insert=False, force_update=False, using=None, update_fields=None):
-        super().save_base(raw, force_insert, force_update, using, update_fields)
-
     def save(self, force_insert=False, force_update=False, using=None, update_fields=None):
         try:
-            with transaction.atomic() as trans:
-                super().save(force_insert, force_update, using, update_fields)
+            super().save(force_insert, force_update, using, update_fields)
         except IntegrityError as e:
             raise ValidationError("There's already a booking on those days") from e
 
