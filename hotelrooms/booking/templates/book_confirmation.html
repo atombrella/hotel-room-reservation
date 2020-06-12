@@ -1,5 +1,5 @@
 {% extends "base.html" %}
 
 {% block content %}
-Congratulations, you've booking the room {{ room }} from {{ room.time.0 }} to {{ room.time.0 }}.
+Congratulations, you've booking the room {{ booking.room }} from {{ booking.time.lower }} to {{ booking.time.upper }}.
 {% endblock %}

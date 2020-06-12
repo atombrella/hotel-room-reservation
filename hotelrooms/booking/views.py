@@ -14,13 +14,15 @@ class BookRoom(FormView):
     template_name = "book_room.html"
 
     def form_valid(self, form):
-        booking = super().form_valid(form)
+        booking = form.instance
+        booking.save()
         return HttpResponseRedirect(booking.get_absolute_url())
 
 
 class BookingView(DetailView):
     model = Booking
     template_name = "book_confirmation.html"
+    context_object_name = 'booking'
 
 
 class Rooms(ListView):

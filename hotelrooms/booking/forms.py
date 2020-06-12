@@ -18,16 +18,16 @@ class BookingForm(ModelForm):
         super().__init__(*args, **kwargs)
         self.fields['room'].empty_label = None
 
-    def clean(self):
-        if hasattr(self.instance, "pk"):
-            with transaction.atomic() as t:
-                # probably should be select for update
-                self.instance.time = self.cleaned_data['time']
-                try:
-                    self.instance.save()
-                except IntegrityError:
-                    raise ValidationError("Can't book hotel room on the same day")
-        return self.cleaned_data
+    # def clean(self):
+    #     if hasattr(self.instance, "pk"):
+    #         with transaction.atomic() as t:
+    #             # probably should be select for update
+    #             self.instance.time = self.cleaned_data['time']
+    #             try:
+    #                 self.instance.save()
+    #             except IntegrityError:
+    #                 raise ValidationError("Can't book hotel room on the same day")
+    #     return self.cleaned_data
 
     class Meta:
         model = Booking
